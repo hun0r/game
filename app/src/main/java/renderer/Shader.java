@@ -16,6 +16,7 @@ import org.lwjgl.BufferUtils;
 public class Shader {
     private int shaderProgramID;
     private Texture tex;
+    private String texVarName;
 
     public Shader(String vertexPath, String fragmentPath){
         final String vertexShaderSrc = getImportantResource("vertex.glsl");
@@ -74,6 +75,8 @@ public class Shader {
     public Handle use(){
         assert ProgramInUse() != shaderProgramID : "No need to activate it twice.";
         glUseProgram(shaderProgramID);
+        uploadInt(texVarName, 0);
+        glActiveTexture(GL_TEXTURE0);
         tex.bind();
         return new Handle(this);
     }
@@ -123,7 +126,7 @@ public class Shader {
         glUniform1i(varLocation, val);
     }
     public void uploadTexture(String varName, Texture tex){
-        uploadInt(varName, 0);
+        this.texVarName = varName;
         this.tex = tex;
     }
 

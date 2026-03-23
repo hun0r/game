@@ -31,12 +31,17 @@ public class Texture {
 
         assert image != null : "Error loading Texture " + filepath + ".";
         if (image != null){System.err.println(filepath);}
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-        //stbi_image_free(image);
+        if (channels.get(0) == 3){
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        } else if (channels.get(0) == 4){
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        }
+        if (image != null){
+            stbi_image_free(image);
+        }
     }
     public void bind(){
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE, texID);
+        glBindTexture(GL_TEXTURE_2D, texID);
     }
     public void unbind(){
         glBindTexture(GL_TEXTURE_2D, 0);
