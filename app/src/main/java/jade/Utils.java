@@ -31,6 +31,19 @@ public class Utils {
         }
         return data;
     }
+    public static Path getResourcePath(String fileName) throws URISyntaxException{
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        URL url = classLoader.getResource(fileName);
+        Path path = Paths.get(url.toURI());
+        return path;
+    };
+    public static Path getImportantResourcePath(String fileName){
+        try{
+            return getResourcePath(fileName);
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
     public static String getResource(String fileName) throws FileNotFoundException, IOException, URISyntaxException{
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         URL url = classLoader.getResource(fileName);
